@@ -1,5 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-class MessagesRepository {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class MessagesRepository extends ChangeNotifier {
   final List<Message> messages = [
     Message(
         text: 'Hello',
@@ -15,7 +17,19 @@ class MessagesRepository {
         dateTime: DateTime.now().subtract(const Duration(minutes: 1))),
     Message(text: 'Are u ok?', sender: 'Jane', dateTime: DateTime.now()),
   ];
-  int newMessageCount = 4;
+}
+
+final messagesProvider = ChangeNotifierProvider((ref) => MessagesRepository());
+
+final newMessagesNumberProvider =
+    StateNotifierProvider<NewMessageNumber, int>((ref) => NewMessageNumber(4));
+
+class NewMessageNumber extends StateNotifier<int> {
+  NewMessageNumber(super.state);
+
+  void reset() {
+    state = 0;
+  }
 }
 
 class Message {

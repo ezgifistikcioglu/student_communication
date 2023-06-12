@@ -1,26 +1,31 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/core/constants/app_constants.dart';
 import 'package:student_communication/repository/messages_repository.dart';
 
-class Messages extends StatefulWidget {
-  final MessagesRepository messagesRepository;
-  const Messages(this.messagesRepository, {super.key});
+class Messages extends ConsumerStatefulWidget {
+  const Messages({super.key});
 
   @override
-  State<Messages> createState() => _MessagesState();
+  _MessagesState createState() => _MessagesState();
 }
 
-class _MessagesState extends State<Messages> {
+class _MessagesState extends ConsumerState<Messages> {
   @override
   void initState() {
-    widget.messagesRepository.newMessageCount = 0;
+    resetMessages();
     super.initState();
+  }
+
+  Future<void> resetMessages() async {
+    await Future.delayed(Duration.zero)
+        .then((value) => ref.read(newMessagesNumberProvider.notifier).reset());
   }
 
   @override
   Widget build(BuildContext context) {
+    final messagesRepository = ref.watch(messagesProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Messages')),
       body: Column(
@@ -28,10 +33,10 @@ class _MessagesState extends State<Messages> {
           Expanded(
             child: ListView.builder(
               reverse: true,
-              itemCount: widget.messagesRepository.messages.length,
+              itemCount: messagesRepository.messages.length,
               itemBuilder: (context, index) {
-                return MessageView(widget.messagesRepository.messages[
-                    widget.messagesRepository.messages.length - index - 1]);
+                return MessageView(messagesRepository
+                    .messages[messagesRepository.messages.length - index - 1]);
               },
             ),
           ),
@@ -61,7 +66,7 @@ class _MessagesState extends State<Messages> {
                   padding: const EdgeInsets.only(right: 10.0),
                   child: ElevatedButton(
                       onPressed: () {
-                        print("send");
+                        debugPrint("send");
                       },
                       child: const Text('SEND')),
                 )

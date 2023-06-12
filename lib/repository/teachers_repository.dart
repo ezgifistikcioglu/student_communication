@@ -1,4 +1,7 @@
-class TeachersRepository {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class TeachersRepository extends ChangeNotifier {
   final List<Teacher> teachers = [
     Teacher(name: 'Randolph', surname: 'Gibson', age: 30, gender: 'Male'),
     Teacher(name: 'Sharon', surname: 'Jones', age: 30, gender: 'Female'),
@@ -6,6 +9,8 @@ class TeachersRepository {
     Teacher(name: 'Minnie', surname: 'Battle', age: 30, gender: 'Female'),
   ];
 }
+
+final teachersProvider = ChangeNotifierProvider((ref) => TeachersRepository());
 
 class Teacher {
   String name;

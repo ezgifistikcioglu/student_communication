@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/widgets/pages/app.dart';
-import 'package:student_communication/widgets/pages/messages.dart';
-import 'package:student_communication/widgets/pages/students.dart';
-import 'package:student_communication/widgets/pages/teachers.dart';
 
 import 'core/constants/app_constants.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

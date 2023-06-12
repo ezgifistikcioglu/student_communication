@@ -1,77 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/core/constants/app_constants.dart';
 import 'package:student_communication/repository/students_repository.dart';
 
-class Students extends StatefulWidget {
-  final StudentsRepository? studentsRepository;
-  const Students(this.studentsRepository, {super.key});
+class Students extends ConsumerWidget {
+  const Students({super.key});
 
   @override
-  State<Students> createState() => _StudentsState();
-}
-
-class _StudentsState extends State<Students> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final studentRepository = ref.watch(studentProvider);
     return Scaffold(
       appBar: AppBar(title: const Text('Students')),
       body: Column(
         children: [
-          textLengthContainer(studentLength()),
+          textLengthContainer(studentLength(studentRepository)),
           Expanded(
               child: ListView.separated(
                   itemBuilder: (context, index) {
-                    if (widget.studentsRepository != null) {
-                      return StudentListTile(
-                          widget.studentsRepository!.students[index],
-                          widget.studentsRepository!);
-                    }
-                    return const Placeholder();
+                    return StudentListTile(studentRepository.students[index]);
                   },
                   separatorBuilder: (context, index) => const Divider(),
-                  itemCount: widget.studentsRepository!.students.length)),
+                  itemCount: studentRepository.students.length)),
         ],
       ),
     );
   }
 
-  Padding studentLength() {
+  Padding studentLength(StudentsRepository studentRepository) {
     return Padding(
       padding: ApplicationConstants.symmetricPadding,
-      child: Text(widget.studentsRepository != null
-          ? '${widget.studentsRepository!.students.length} students'
-          : '- students'),
+      child: Text('${studentRepository.students.length} students'),
     );
   }
 }
 
-class StudentListTile extends StatefulWidget {
+class StudentListTile extends ConsumerWidget {
   final Student student;
-  final StudentsRepository studentsRepository;
   const StudentListTile(
-    this.student,
-    this.studentsRepository, {
+    this.student, {
     super.key,
   });
 
   @override
-  State<StudentListTile> createState() => _StudentListTileState();
-}
-
-class _StudentListTileState extends State<StudentListTile> {
-  @override
-  Widget build(BuildContext context) {
-    bool doILove = widget.studentsRepository.doILove(widget.student);
+  Widget build(BuildContext context, WidgetRef ref) {
+    bool doILove = ref.watch(studentProvider).doILove(student);
     return ListTile(
-      title: Text('${widget.student.name} ${widget.student.surname}'),
-      leading: Icon(widget.student.gender == "Female"
+      title: Text('${student.name} ${student.surname}'),
+      leading: Icon(student.gender == "Female"
           ? Icons.person_2_outlined
           : Icons.person_3_outlined),
       trailing: IconButton(
         onPressed: () {
-          setState(() {
-            widget.studentsRepository.like(widget.student, !doILove);
-          });
+          ref.read(studentProvider).like(student, !doILove);
         },
         icon: Icon(doILove ? Icons.favorite : Icons.favorite_border),
       ),

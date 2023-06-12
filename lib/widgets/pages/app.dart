@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/repository/messages_repository.dart';
 import 'package:student_communication/repository/students_repository.dart';
 import 'package:student_communication/repository/teachers_repository.dart';
@@ -8,24 +9,18 @@ import 'package:student_communication/widgets/pages/teachers.dart';
 
 import '../custom_drawer.dart';
 
-class MyHomePage extends StatefulWidget {
+class MyHomePage extends ConsumerWidget {
   const MyHomePage({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final studentsRepository = ref.watch(studentProvider);
+    final teachersRepository = ref.watch(teachersProvider);
 
-class _MyHomePageState extends State<MyHomePage> {
-  MessagesRepository messagesRepository = MessagesRepository();
-  StudentsRepository studentsRepository = StudentsRepository();
-  TeachersRepository teachersRepository = TeachersRepository();
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(title),
       ),
       drawer: const CustomDrawer(),
       body: Center(
@@ -34,7 +29,8 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             TextButton(
               onPressed: () => _goToMessages(context),
-              child: Text('${messagesRepository.newMessageCount} new messages'),
+              child:
+                  Text('${ref.watch(newMessagesNumberProvider)} new messages'),
             ),
             TextButton(
               onPressed: () => _goToStudents(context),
@@ -53,14 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _goToMessages(BuildContext context) async {
     await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => Messages(messagesRepository)),
+      MaterialPageRoute(builder: (context) => const Messages()),
     );
   }
 
   _goToTeachers(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
-        return Teachers(teachersRepository);
+        return const Teachers();
       },
     ));
   }
@@ -68,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _goToStudents(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) {
-        return Students(studentsRepository);
+        return const Students();
       },
     ));
   }

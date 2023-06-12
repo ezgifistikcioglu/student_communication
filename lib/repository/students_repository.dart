@@ -1,4 +1,7 @@
-class StudentsRepository {
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class StudentsRepository extends ChangeNotifier {
   final List<Student> students = [
     Student(name: 'Mark', surname: 'Doe', age: 18, gender: 'Male'),
     Student(name: 'Barbara', surname: 'Burns', age: 18, gender: 'Female'),
@@ -14,12 +17,15 @@ class StudentsRepository {
     } else {
       myLovedOnes.remove(student);
     }
+    notifyListeners();
   }
 
   bool doILove(Student student) {
     return myLovedOnes.contains(student);
   }
 }
+
+final studentProvider = ChangeNotifierProvider((ref) => StudentsRepository());
 
 class Student {
   String name;

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:student_communication/widgets/custom_list_tile.dart';
-import 'package:student_communication/widgets/pages/students.dart';
 
 class CustomDrawer extends StatefulWidget {
   const CustomDrawer({super.key});
