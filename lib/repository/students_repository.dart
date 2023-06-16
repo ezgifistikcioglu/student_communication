@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_communication/product/services/data_service.dart';
+
+import '../product/models/student_model.dart';
 
 class StudentsRepository extends ChangeNotifier {
+  final DataService dataService;
+
+  StudentsRepository(this.dataService);
+
   final List<Student> students = [
-    Student(name: 'Mark', surname: 'Doe', age: 18, gender: 'Male'),
-    Student(name: 'Barbara', surname: 'Burns', age: 18, gender: 'Female'),
-    Student(name: 'Michael', surname: 'Fole', age: 18, gender: 'Male'),
-    Student(name: 'Alanna', surname: 'Mejia', age: 18, gender: 'Female'),
+    Student(name: 'Jane', surname: 'Doe', age: 17, gender: 'Female'),
   ];
 
   final Set<Student> myLovedOnes = {};
@@ -23,20 +27,14 @@ class StudentsRepository extends ChangeNotifier {
   bool doILove(Student student) {
     return myLovedOnes.contains(student);
   }
+
+  Future<void> download() async {
+    Student studentData = await dataService.studentDownload();
+
+    students.add(studentData);
+    notifyListeners();
+  }
 }
 
-final studentProvider = ChangeNotifierProvider((ref) => StudentsRepository());
-
-class Student {
-  String name;
-  String surname;
-  int age;
-  String gender;
-
-  Student({
-    required this.name,
-    required this.surname,
-    required this.age,
-    required this.gender,
-  });
-}
+final studentProvider = ChangeNotifierProvider(
+    (ref) => StudentsRepository(ref.watch(dataServerProvider)));

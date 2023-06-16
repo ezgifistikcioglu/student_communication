@@ -1,27 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_communication/product/services/data_service.dart';
+
+import '../product/models/teacher_model.dart';
 
 class TeachersRepository extends ChangeNotifier {
+  final DataService dataService;
+
   final List<Teacher> teachers = [
-    Teacher(name: 'Randolph', surname: 'Gibson', age: 30, gender: 'Male'),
-    Teacher(name: 'Sharon', surname: 'Jones', age: 30, gender: 'Female'),
-    Teacher(name: 'Matthew', surname: 'Morales', age: 30, gender: 'Male'),
     Teacher(name: 'Minnie', surname: 'Battle', age: 30, gender: 'Female'),
   ];
+
+  TeachersRepository(this.dataService);
+
+  Future<void> download() async {
+    Teacher teacherData = await dataService.teacherDownload();
+
+    teachers.add(teacherData);
+    notifyListeners();
+  }
 }
 
-final teachersProvider = ChangeNotifierProvider((ref) => TeachersRepository());
-
-class Teacher {
-  String name;
-  String surname;
-  int age;
-  String gender;
-
-  Teacher({
-    required this.name,
-    required this.surname,
-    required this.age,
-    required this.gender,
-  });
-}
+final teachersProvider = ChangeNotifierProvider(
+    (ref) => TeachersRepository(ref.watch(dataServerProvider)));

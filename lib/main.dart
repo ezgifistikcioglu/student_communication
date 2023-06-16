@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/widgets/pages/app.dart';
 
-import 'core/constants/app_constants.dart';
+import 'product/constants/app_constants.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Student Communication',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        appBarTheme: AppBarTheme.of(context).copyWith(
           backgroundColor: normalPurple,
+          foregroundColor: Colors.black,
           systemOverlayStyle: SystemUiOverlayStyle.light,
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
@@ -27,7 +28,18 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        primarySwatch: Colors.blue,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: normalPurple,
+            foregroundColor: Colors.black,
+          ),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            labelStyle: const TextStyle(color: Colors.black54),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: normalPurple),
+            ),
+            suffixIconColor: normalPurple),
       ),
       home: const MyHomePage(title: "title"),
     );

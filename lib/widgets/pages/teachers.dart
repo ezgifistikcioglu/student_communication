@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/repository/teachers_repository.dart';
+import 'package:student_communication/widgets/custom_download_button.dart';
 
-import '../../core/constants/app_constants.dart';
+import '../../product/constants/app_constants.dart';
+import '../../product/models/teacher_model.dart';
+import 'teacher/teacher_form.dart';
 
 class Teachers extends ConsumerWidget {
   const Teachers({super.key});
@@ -18,6 +21,11 @@ class Teachers extends ConsumerWidget {
           textLengthContainer(
             teacherLength(teacherRepository),
           ),
+          Align(
+            alignment: Alignment.centerRight,
+            child:
+                CustomDownloadButton(changeNotifierProvider: teachersProvider),
+          ),
           Expanded(
               child: ListView.separated(
                   itemBuilder: (context, index) {
@@ -26,6 +34,15 @@ class Teachers extends ConsumerWidget {
                   separatorBuilder: (context, index) => const Divider(),
                   itemCount: teacherRepository.teachers.length)),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) {
+              return TeacherForm();
+            },
+          ));
+        },
       ),
     );
   }

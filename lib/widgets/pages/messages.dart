@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:student_communication/core/constants/app_constants.dart';
+import 'package:student_communication/product/constants/app_constants.dart';
 import 'package:student_communication/repository/messages_repository.dart';
+
+import '../../product/models/message_model.dart';
 
 class Messages extends ConsumerStatefulWidget {
   const Messages({super.key});
