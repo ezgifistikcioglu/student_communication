@@ -17,4 +17,8 @@ class Teacher {
     age = json['age'];
     gender = json['gender'];
   }
+
+  Map toMap() {
+    return {'name': name, 'surname': surname, 'age': age, 'gender': gender};
+  }
 }

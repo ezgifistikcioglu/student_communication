@@ -33,8 +33,9 @@ SizedBox get sizedBoxTen => const SizedBox(height: 10);
 SizedBox get sizedBoxFifteen => const SizedBox(height: 15);
 
 // Color
-Color get lightPurple => const Color(0xFF985EA2);
-Color get normalPurple => Colors.purple;
+Color get midPurple => const Color(0xFF985EA2);
+Color get lightPurple => const Color(0xFFF7CFFE);
+Color get normalPurple => const Color(0xFF9C27B0);
 
 BoxDecoration ellipticalBoxDecoration() {
   return BoxDecoration(

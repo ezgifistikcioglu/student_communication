@@ -36,13 +36,19 @@ class Teachers extends ConsumerWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
+        backgroundColor: normalPurple,
+        onPressed: () async {
+          final isCreatedNewTeacher =
+              await Navigator.of(context).push<bool>(MaterialPageRoute(
             builder: (context) {
-              return TeacherForm();
+              return const TeacherForm();
             },
           ));
+          if (isCreatedNewTeacher == true) {
+            print('**** Teacher update');
+          }
         },
+        child: Icon(Icons.add, color: lightPurple),
       ),
     );
   }
