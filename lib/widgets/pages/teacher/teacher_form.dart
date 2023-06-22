@@ -133,20 +133,31 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
         child: const Text('Save'));
   }
 
-  _teacherSave() {
-    try {
-      checkIsSavingStatus();
-      _onButtonTapped();
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
-    } finally {
-      checkIsSavingStatus();
+  Future<void> _teacherSave() async {
+    bool isFinished = false;
+    while (!isFinished) {
+      try {
+        checkIsSavingStatus();
+        await _onButtonTapped();
+        isFinished = true;
+      } catch (e) {
+        final snackBar = ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString())),
+        );
+        await snackBar.closed;
+      } finally {
+        checkIsSavingStatus();
+      }
     }
   }
 
-  void _onButtonTapped() async {
+  int i = 0;
+  Future<void> _onButtonTapped() async {
+    // Fake test
+    // i++;
+    // if (i < 3) {
+    //   throw 'Registration failed';
+    // }
     final newTeacher = Teacher.fromMap(req);
     await ref.read(dataServerProvider).teacherAdd(newTeacher);
 

@@ -27,12 +27,31 @@ class Teachers extends ConsumerWidget {
                 CustomDownloadButton(changeNotifierProvider: teachersProvider),
           ),
           Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, index) {
-                    return TeacherListTile(teacherRepository.teachers[index]);
-                  },
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: teacherRepository.teachers.length)),
+            child: RefreshIndicator(
+              onRefresh: () async {
+                ref.watch(teacherListProvider);
+              },
+              child: ref.watch(teacherListProvider).when(
+                    data: (data) => ListView.separated(
+                        itemBuilder: (context, index) {
+                          return TeacherListTile(data[index]);
+                        },
+                        separatorBuilder: (context, index) => const Divider(),
+                        itemCount: data.length),
+                    error: (error, stackTrace) {
+                      return const SingleChildScrollView(
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: Text('ERR'),
+                      );
+                    },
+                    loading: () {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+            ),
+          ),
         ],
       ),
       floatingActionButton: FloatingActionButton(

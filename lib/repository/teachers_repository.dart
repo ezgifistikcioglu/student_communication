@@ -7,7 +7,7 @@ import '../product/models/teacher_model.dart';
 class TeachersRepository extends ChangeNotifier {
   final DataService dataService;
 
-  final List<Teacher> teachers = [
+  List<Teacher> teachers = [
     Teacher(name: 'Minnie', surname: 'Battle', age: 30, gender: 'Female'),
   ];
 
@@ -19,7 +19,15 @@ class TeachersRepository extends ChangeNotifier {
     teachers.add(teacherData);
     notifyListeners();
   }
+
+  Future<List<Teacher>> getAllUsers() async {
+    teachers = await dataService.getAllTeachers();
+    return teachers;
+  }
 }
 
 final teachersProvider = ChangeNotifierProvider(
     (ref) => TeachersRepository(ref.watch(dataServerProvider)));
+
+final teacherListProvider =
+    FutureProvider((ref) => ref.watch(teachersProvider).getAllUsers());

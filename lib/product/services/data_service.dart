@@ -45,6 +45,17 @@ class DataService {
 
   showException(http.Response response, String name) =>
       Exception('The $name ${response.statusCode}');
+
+  Future<List<Teacher>> getAllTeachers() async {
+    final response = await http.get(Uri.parse('$baseUrl/teacher'));
+
+    if (response.statusCode == 200) {
+      final dynamicList = jsonDecode(response.body);
+      return dynamicList.map<Teacher>((e) => Teacher.fromMap(e)).toList();
+    } else {
+      throw showException(response, "Teacher could not be brought.");
+    }
+  }
 }
 
 final dataServerProvider = Provider((ref) => DataService());
