@@ -27,7 +27,7 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Add Teacher"),
+        title: const Text(ApplicationConstants.addTeacherText),
       ),
       body: SafeArea(
         child: Padding(
@@ -44,29 +44,29 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
                 TextFormFieldWidget(
                   req: req,
                   context: context,
-                  labelText: 'Name',
-                  validatorText: 'Name cannot be empty',
+                  labelText: ApplicationConstants.nameText,
+                  validatorText: ApplicationConstants.valNameComment,
                   suffixIcon: Icons.texture_rounded,
                 ),
                 TextFormFieldWidget(
                   req: req,
                   context: context,
-                  labelText: 'Surname',
-                  validatorText: 'Surname cannot be empty',
+                  labelText: ApplicationConstants.surnameText,
+                  validatorText: ApplicationConstants.valSurnameComment,
                   suffixIcon: Icons.text_format_rounded,
                 ),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                      labelText: 'Age',
+                      labelText: ApplicationConstants.ageText,
                       suffixIcon: Icon(Icons.format_size_rounded)),
                   onSaved: (newValue) {
                     req['age'] = int.parse(newValue!);
                   },
                   validator: (value) {
                     if (value?.isNotEmpty != true) {
-                      return 'Age cannot be empty';
+                      return ApplicationConstants.valAgeComment;
                     }
                     if (int.tryParse(value!) == null) {
                       return 'Enter your age in numbers';
@@ -91,21 +91,25 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
   DropdownButtonFormField<Object> genderDropdown() {
     return DropdownButtonFormField(
       items: [
-        dropdownItem('Female', const Text('Female')),
         dropdownItem(
-          'Male',
-          const Text('Male'),
+            ApplicationConstants.genderFText,
+            const Text(
+              ApplicationConstants.genderFText,
+            )),
+        dropdownItem(
+          ApplicationConstants.genderMText,
+          const Text(ApplicationConstants.genderMText),
         )
       ],
-      value: req['gender'],
+      value: req[ApplicationConstants.genderText],
       onChanged: (value) {
         setState(() {
-          req['gender'] = value;
+          req[ApplicationConstants.genderText] = value;
         });
       },
       validator: (value) {
         if (value == null) {
-          return 'Please choose a gender';
+          return ApplicationConstants.valGenderComment;
         }
         return null;
       },
@@ -126,11 +130,11 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
           if (formState == null) return;
           if (formState.validate() == true) {
             formState.save();
-            print('***** $req');
+            debugPrint('***** $req');
           }
           _teacherSave();
         },
-        child: const Text('Save'));
+        child: const Text(ApplicationConstants.saveText));
   }
 
   Future<void> _teacherSave() async {
@@ -160,7 +164,7 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
     // }
     final newTeacher = Teacher.fromMap(req);
     await ref.read(dataServerProvider).teacherAdd(newTeacher);
-
+    if (!mounted) return;
     Navigator.of(context).pop(true);
   }
 

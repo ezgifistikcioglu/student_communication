@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:student_communication/widgets/pages/app.dart';
+import 'package:student_communication/widgets/pages/splash/splash_screen.dart';
 
 import 'product/constants/app_constants.dart';
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Student Communication',
+      title: ApplicationConstants.homePageText,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         appBarTheme: AppBarTheme.of(context).copyWith(
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             ),
             suffixIconColor: normalPurple),
       ),
-      home: const MyHomePage(title: "title"),
+      home: const SplashScreen(),
     );
   }
 }

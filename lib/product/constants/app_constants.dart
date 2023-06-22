@@ -2,6 +2,25 @@ import 'package:flutter/material.dart';
 
 class ApplicationConstants {
   static const String unknownText = 'Unknown';
+  static const String errText = 'Error';
+  static const String homeText = 'Home Page';
+  static const String homePageText = 'Student Communication';
+  static const String messagePageText = 'Messages';
+  static const String studentsPageText = 'Students';
+  static const String teachersPageText = 'Teachers';
+  static const String sendText = 'SEND';
+  static const String genderText = 'gender';
+  static const String genderFText = 'Female';
+  static const String genderMText = 'Male';
+  static const String nameText = 'Name';
+  static const String surnameText = 'Surname';
+  static const String ageText = 'Age';
+  static const String addTeacherText = 'Add Teacher';
+  static const String saveText = 'Save';
+  static const String valGenderComment = 'Please choose a gender';
+  static const String valAgeComment = 'Age cannot be empty';
+  static const String valSurnameComment = 'Surname cannot be empty';
+  static const String valNameComment = 'Name cannot be empty';
 
   // Padding
   static const EdgeInsets normalPadding = EdgeInsets.all(8);
@@ -16,7 +35,7 @@ double getMaxWidth(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.7;
 
 double getMinWidth(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.06;
+    MediaQuery.of(context).size.width * 0.2;
 
 double getMaxHeight(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.9;

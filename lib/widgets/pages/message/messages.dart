@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/product/constants/app_constants.dart';
 import 'package:student_communication/repository/messages_repository.dart';
 
-import '../../product/models/message_model.dart';
+import '../../../product/models/message_model.dart';
 
 class Messages extends ConsumerStatefulWidget {
   const Messages({super.key});
@@ -29,7 +29,7 @@ class _MessagesState extends ConsumerState<Messages> {
     final messagesRepository = ref.watch(messagesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Messages')),
+      appBar: AppBar(title: const Text(ApplicationConstants.messagePageText)),
       body: Column(
         children: [
           Expanded(
@@ -68,9 +68,9 @@ class _MessagesState extends ConsumerState<Messages> {
                   padding: const EdgeInsets.only(right: 10.0),
                   child: ElevatedButton(
                       onPressed: () {
-                        debugPrint("send");
+                        debugPrint(ApplicationConstants.sendText);
                       },
-                      child: const Text('SEND')),
+                      child: const Text(ApplicationConstants.sendText)),
                 )
               ],
             ),

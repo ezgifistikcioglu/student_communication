@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/repository/teachers_repository.dart';
-import 'package:student_communication/widgets/custom_download_button.dart';
+import 'package:student_communication/widgets/customs/custom_download_button.dart';
 
-import '../../product/constants/app_constants.dart';
-import '../../product/models/teacher_model.dart';
-import 'teacher/teacher_form.dart';
+import '../../../product/constants/app_constants.dart';
+import '../../../product/models/teacher_model.dart';
+import 'teacher_form.dart';
 
 class Teachers extends ConsumerWidget {
   const Teachers({super.key});
@@ -15,7 +15,7 @@ class Teachers extends ConsumerWidget {
     final teacherRepository = ref.watch(teachersProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Teachers')),
+      appBar: AppBar(title: const Text(ApplicationConstants.teachersPageText)),
       body: Column(
         children: [
           textLengthContainer(
@@ -41,7 +41,7 @@ class Teachers extends ConsumerWidget {
                     error: (error, stackTrace) {
                       return const SingleChildScrollView(
                         physics: AlwaysScrollableScrollPhysics(),
-                        child: Text('ERR'),
+                        child: Text(ApplicationConstants.errText),
                       );
                     },
                     loading: () {
@@ -64,7 +64,7 @@ class Teachers extends ConsumerWidget {
             },
           ));
           if (isCreatedNewTeacher == true) {
-            print('**** Teacher update');
+            debugPrint('**** Teacher update');
           }
         },
         child: Icon(Icons.add, color: lightPurple),
@@ -75,7 +75,8 @@ class Teachers extends ConsumerWidget {
   Padding teacherLength(TeachersRepository teachersRepository) {
     return Padding(
       padding: ApplicationConstants.symmetricPadding,
-      child: Text('${teachersRepository.teachers.length} teachers'),
+      child: Text(
+          '${teachersRepository.teachers.length} ${ApplicationConstants.teachersPageText}'),
     );
   }
 }
@@ -91,7 +92,7 @@ class TeacherListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Text('${teacher.name} ${teacher.surname}'),
-      leading: Icon(teacher.gender == "Female"
+      leading: Icon(teacher.gender == ApplicationConstants.genderFText
           ? Icons.person_2_outlined
           : Icons.person_3_outlined),
     );

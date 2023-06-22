@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:student_communication/repository/students_repository.dart';
 
-import '../repository/teachers_repository.dart';
+import '../../repository/teachers_repository.dart';
 
 class CustomDownloadButton extends StatefulWidget {
   final ChangeNotifierProvider<dynamic> changeNotifierProvider;

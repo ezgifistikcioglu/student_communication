@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:student_communication/product/constants/app_constants.dart';
 import 'package:student_communication/repository/messages_repository.dart';
 import 'package:student_communication/repository/students_repository.dart';
 import 'package:student_communication/repository/teachers_repository.dart';
-import 'package:student_communication/widgets/pages/messages.dart';
-import 'package:student_communication/widgets/pages/students.dart';
-import 'package:student_communication/widgets/pages/teachers.dart';
+import 'package:student_communication/widgets/pages/message/messages.dart';
+import 'package:student_communication/widgets/pages/student/students.dart';
+import 'package:student_communication/widgets/pages/teacher/teachers.dart';
 
-import '../custom_drawer.dart';
+import '../customs/custom_drawer.dart';
 
 class MyHomePage extends ConsumerWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, this.title = ApplicationConstants.homePageText});
   final String title;
 
   @override
