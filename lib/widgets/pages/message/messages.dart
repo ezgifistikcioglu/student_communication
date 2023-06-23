@@ -9,10 +9,10 @@ class Messages extends ConsumerStatefulWidget {
   const Messages({super.key});
 
   @override
-  _MessagesState createState() => _MessagesState();
+  MessagesState createState() => MessagesState();
 }
 
-class _MessagesState extends ConsumerState<Messages> {
+class MessagesState extends ConsumerState<Messages> {
   @override
   void initState() {
     resetMessages();

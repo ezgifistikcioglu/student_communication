@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:student_communication/product/constants/app_constants.dart';
+import 'package:student_communication/product/extension/image_path_extension.dart';
+import 'package:student_communication/utilities/google_sign_in.dart';
 
 import '../app.dart';
 
@@ -12,6 +14,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  bool isFirebaseInitialized = false;
   @override
   void initState() {
     super.initState();
@@ -20,16 +23,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: isFirebaseInitialized
+            ? IconButton(
+                onPressed: () async {
+                  await signInWithGoogle();
+                  goToHomePage();
+                },
+                icon: ImagePaths.ic_google.toWidget(),
+              )
+            : const CircularProgressIndicator(),
       ),
     );
   }
 
   Future<void> initializeFirebase() async {
     await Firebase.initializeApp();
-    if (!mounted) return;
+    setState(() {
+      isFirebaseInitialized = true;
+    });
+    if (FirebaseAuth.instance.currentUser != null) {
+      goToHomePage();
+    }
+  }
+
+  void goToHomePage() {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
       builder: (context) {
         return const MyHomePage();

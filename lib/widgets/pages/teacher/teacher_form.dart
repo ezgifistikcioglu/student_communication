@@ -12,10 +12,10 @@ class TeacherForm extends ConsumerStatefulWidget {
   const TeacherForm({super.key});
 
   @override
-  _TeacherFormState createState() => _TeacherFormState();
+  TeacherFormState createState() => TeacherFormState();
 }
 
-class _TeacherFormState extends ConsumerState<TeacherForm> {
+class TeacherFormState extends ConsumerState<TeacherForm> {
   final Map<String, dynamic> req = {};
   final _formKey = GlobalKey<FormState>();
 
@@ -42,17 +42,33 @@ class _TeacherFormState extends ConsumerState<TeacherForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 TextFormFieldWidget(
-                  req: req,
-                  context: context,
+                  validator: (value) {
+                    (value) {
+                      if (value?.isNotEmpty != true) {
+                        return ApplicationConstants.valNameComment;
+                      }
+                    };
+                    return null;
+                  },
+                  onSaved: (newValue) {
+                    req['name'] = newValue;
+                  },
                   labelText: ApplicationConstants.nameText,
-                  validatorText: ApplicationConstants.valNameComment,
                   suffixIcon: Icons.texture_rounded,
                 ),
                 TextFormFieldWidget(
-                  req: req,
-                  context: context,
+                  validator: (value) {
+                    (value) {
+                      if (value?.isNotEmpty != true) {
+                        return ApplicationConstants.valSurnameComment;
+                      }
+                    };
+                    return null;
+                  },
+                  onSaved: (newValue) {
+                    req['surname'] = newValue;
+                  },
                   labelText: ApplicationConstants.surnameText,
-                  validatorText: ApplicationConstants.valSurnameComment,
                   suffixIcon: Icons.text_format_rounded,
                 ),
                 TextFormField(

@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:student_communication/product/constants/app_constants.dart';
+import 'package:student_communication/utilities/google_sign_out.dart';
 import 'package:student_communication/widgets/customs/custom_list_tile.dart';
 import 'package:student_communication/widgets/pages/app.dart';
 import 'package:student_communication/widgets/pages/message/messages.dart';
+import 'package:student_communication/widgets/pages/splash/splash_screen.dart';
 import 'package:student_communication/widgets/pages/student/students.dart';
 import 'package:student_communication/widgets/pages/teacher/teachers.dart';
 
@@ -32,9 +35,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     color: Colors.white,
                     size: getMinWidth(context),
                   ),
-                  const Text(
-                    ApplicationConstants.homePageText,
-                    style: TextStyle(color: Colors.white, fontSize: 25.0),
+                  Text(
+                    FirebaseAuth.instance.currentUser!.displayName!,
+                    style: const TextStyle(color: Colors.white, fontSize: 25.0),
                   ),
                 ],
               ),
@@ -58,6 +61,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
             leadingIcon: const Icon(Icons.message_outlined),
             textTitle: const Text(ApplicationConstants.messagePageText),
             onTap: () => navigatorToPage(context, const Messages()),
+          ),
+          NewListTile(
+            leadingIcon: const Icon(Icons.logout_outlined),
+            textTitle: const Text(ApplicationConstants.logoutText),
+            onTap: () async {
+              await signOutWithGoogle();
+              if (!mounted) return;
+              navigatorToPage(context, const SplashScreen());
+            },
           ),
         ],
       ),

@@ -21,6 +21,7 @@ class ApplicationConstants {
   static const String valAgeComment = 'Age cannot be empty';
   static const String valSurnameComment = 'Surname cannot be empty';
   static const String valNameComment = 'Name cannot be empty';
+  static const String logoutText = 'Logout';
 
   // Padding
   static const EdgeInsets normalPadding = EdgeInsets.all(8);
