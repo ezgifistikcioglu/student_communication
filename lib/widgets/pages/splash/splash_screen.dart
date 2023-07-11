@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,19 @@ class _SplashScreenState extends State<SplashScreen> {
             ? IconButton(
                 onPressed: () async {
                   await signInWithGoogle();
+                  // get authentiication user uid
+                  String uid = FirebaseAuth.instance.currentUser!.uid;
+                  await FirebaseFirestore.instance
+                      .collection('users')
+                      .doc(uid)
+                      .set(
+                    {
+                      'userLoggedIn': true,
+                      'lastEntryDate':
+                          FieldValue.serverTimestamp(), // get server time
+                    },
+                    SetOptions(merge: true),
+                  );
                   goToHomePage();
                 },
                 icon: ImagePaths.ic_google.toWidget(),

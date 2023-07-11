@@ -18,7 +18,7 @@ class Teacher {
     gender = json['gender'];
   }
 
-  Map toMap() {
+  Map<String, dynamic> toMap() {
     return {'name': name, 'surname': surname, 'age': age, 'gender': gender};
   }
 }

@@ -171,7 +171,7 @@ class TeacherFormState extends ConsumerState<TeacherForm> {
     }
   }
 
-  int i = 0;
+  // int i = 0;
   Future<void> _onButtonTapped() async {
     // Fake test
     // i++;
@@ -179,7 +179,7 @@ class TeacherFormState extends ConsumerState<TeacherForm> {
     //   throw 'Registration failed';
     // }
     final newTeacher = Teacher.fromMap(req);
-    await ref.read(dataServerProvider).teacherAdd(newTeacher);
+    await ref.read(dataServiceProvider).teacherAdd(newTeacher);
     if (!mounted) return;
     Navigator.of(context).pop(true);
   }

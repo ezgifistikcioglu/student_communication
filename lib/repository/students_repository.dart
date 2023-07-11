@@ -37,4 +37,4 @@ class StudentsRepository extends ChangeNotifier {
 }
 
 final studentProvider = ChangeNotifierProvider(
-    (ref) => StudentsRepository(ref.watch(dataServerProvider)));
+    (ref) => StudentsRepository(ref.watch(dataServiceProvider)));

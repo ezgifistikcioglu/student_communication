@@ -27,7 +27,7 @@ class TeachersRepository extends ChangeNotifier {
 }
 
 final teachersProvider = ChangeNotifierProvider(
-    (ref) => TeachersRepository(ref.watch(dataServerProvider)));
+    (ref) => TeachersRepository(ref.watch(dataServiceProvider)));
 
 final teacherListProvider =
     FutureProvider((ref) => ref.watch(teachersProvider).getAllUsers());
