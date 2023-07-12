@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ApplicationConstants {
@@ -36,7 +37,7 @@ double getMaxWidth(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.7;
 
 double getMinWidth(BuildContext context) =>
-    MediaQuery.of(context).size.width * 0.2;
+    MediaQuery.of(context).size.width * 0.1;
 
 double getMaxHeight(BuildContext context) =>
     MediaQuery.of(context).size.width * 0.9;
@@ -56,6 +57,10 @@ SizedBox get sizedBoxFifteen => const SizedBox(height: 15);
 Color get midPurple => const Color(0xFF985EA2);
 Color get lightPurple => const Color(0xFFF7CFFE);
 Color get normalPurple => const Color(0xFF9C27B0);
+
+//uid
+String get uid => firebaseGetCurrentUser().uid;
+User firebaseGetCurrentUser() => FirebaseAuth.instance.currentUser!;
 
 BoxDecoration ellipticalBoxDecoration() {
   return BoxDecoration(

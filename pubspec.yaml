@@ -16,6 +16,7 @@ dependencies:
 
   #riverpod
   flutter_riverpod: ^2.3.6
+
   #http
   http: ^1.0.0
 
@@ -24,6 +25,10 @@ dependencies:
   firebase_auth: ^4.6.3
   google_sign_in: ^6.1.4
   cloud_firestore: ^4.8.2
+
+  #image
+  image_picker: ^1.0.0
+  firebase_storage: ^11.2.4
   
 dev_dependencies:
   flutter_test:

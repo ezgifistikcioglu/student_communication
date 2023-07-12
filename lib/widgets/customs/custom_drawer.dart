@@ -1,5 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:student_communication/product/constants/app_constants.dart';
 import 'package:student_communication/utilities/google_sign_out.dart';
 import 'package:student_communication/widgets/customs/custom_list_tile.dart';
@@ -17,6 +22,27 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  Future<Uint8List?>? _userPictureFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _userPictureFuture = _userPictureDownload();
+  }
+
+  Future<Uint8List?> _userPictureDownload() async {
+    final documentSnapshot =
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
+    final userRecMapData = documentSnapshot.data();
+    if (userRecMapData == null) return null;
+    if (userRecMapData.containsKey('userPictureRef')) {
+      Uint8List? uint8list = await FirebaseStorage.instance
+          .ref(userRecMapData['userPictureRef'])
+          .getData();
+      return uint8list;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -35,9 +61,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     color: Colors.white,
                     size: getMinWidth(context),
                   ),
-                  Text(
-                    FirebaseAuth.instance.currentUser!.displayName!,
-                    style: const TextStyle(color: Colors.white, fontSize: 25.0),
+                  Column(
+                    children: [
+                      Text(
+                        firebaseGetCurrentUser().displayName!,
+                        style: const TextStyle(
+                            color: Colors.white, fontSize: 25.0),
+                      ),
+                      sizedBoxFive,
+                      InkWell(
+                        onTap: () async {
+                          XFile? xFile = await ImagePicker()
+                              .pickImage(source: ImageSource.camera);
+                          if (xFile == null) return;
+                          final imagePath = xFile.path;
+                          final userPictureRef = FirebaseStorage.instance
+                              .ref('userPicture')
+                              .child('$uid.jpg');
+                          await userPictureRef.putFile(File(imagePath));
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .update(
+                                  {'userPictureRef': userPictureRef.fullPath});
+                          setState(() {
+                            _userPictureFuture = _userPictureDownload();
+                          });
+                        },
+                        child: FutureBuilder<Uint8List?>(
+                            future: _userPictureFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData && snapshot.data != null) {
+                                final pictureInMemory = snapshot.data!;
+                                return CircleAvatar(
+                                  backgroundImage: MemoryImage(pictureInMemory),
+                                );
+                              }
+                              return const CircleAvatar(
+                                child: Text('data'),
+                              );
+                            }),
+                      )
+                    ],
                   ),
                 ],
               ),
