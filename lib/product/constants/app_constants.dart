@@ -57,6 +57,7 @@ SizedBox get sizedBoxFifteen => const SizedBox(height: 15);
 Color get midPurple => const Color(0xFF985EA2);
 Color get lightPurple => const Color(0xFFF7CFFE);
 Color get normalPurple => const Color(0xFF9C27B0);
+Color get normalWhite => const Color(0xFFFFFFFF);
 
 //uid
 String get uid => firebaseGetCurrentUser().uid;

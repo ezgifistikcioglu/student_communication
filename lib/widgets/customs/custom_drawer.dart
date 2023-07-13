@@ -36,11 +36,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
     final userRecMapData = documentSnapshot.data();
     if (userRecMapData == null) return null;
     if (userRecMapData.containsKey('userPictureRef')) {
-      Uint8List? uint8list = await FirebaseStorage.instance
-          .ref(userRecMapData['userPictureRef'])
-          .getData();
+      final userRecMapData2 = userRecMapData['userPictureRef'];
+      Uint8List? uint8list =
+          await FirebaseStorage.instance.ref(userRecMapData2).getData();
       return uint8list;
     }
+    return null;
   }
 
   @override
@@ -57,51 +58,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Icon(
-                    Icons.text_fields_rounded,
-                    color: Colors.white,
+                    Icons.person_outlined,
+                    color: normalWhite,
                     size: getMinWidth(context),
                   ),
                   Column(
                     children: [
-                      Text(
-                        firebaseGetCurrentUser().displayName!,
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 25.0),
-                      ),
+                      userInfoText(firebaseGetCurrentUser().displayName!,
+                          fontSize: 23.0),
+                      userInfoText(firebaseGetCurrentUser().email!),
                       sizedBoxFive,
-                      InkWell(
-                        onTap: () async {
-                          XFile? xFile = await ImagePicker()
-                              .pickImage(source: ImageSource.camera);
-                          if (xFile == null) return;
-                          final imagePath = xFile.path;
-                          final userPictureRef = FirebaseStorage.instance
-                              .ref('userPicture')
-                              .child('$uid.jpg');
-                          await userPictureRef.putFile(File(imagePath));
-                          await FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(uid)
-                              .update(
-                                  {'userPictureRef': userPictureRef.fullPath});
-                          setState(() {
-                            _userPictureFuture = _userPictureDownload();
-                          });
-                        },
-                        child: FutureBuilder<Uint8List?>(
-                            future: _userPictureFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData && snapshot.data != null) {
-                                final pictureInMemory = snapshot.data!;
-                                return CircleAvatar(
-                                  backgroundImage: MemoryImage(pictureInMemory),
-                                );
-                              }
-                              return const CircleAvatar(
-                                child: Text('data'),
-                              );
-                            }),
-                      )
+                      drawerUserPicture()
                     ],
                   ),
                 ],
@@ -140,6 +107,45 @@ class _CustomDrawerState extends State<CustomDrawer> {
       ),
     );
   }
+
+  Widget drawerUserPicture() {
+    return InkWell(
+      onTap: () async {
+        XFile? xFile =
+            await ImagePicker().pickImage(source: ImageSource.camera);
+        if (xFile == null) return;
+        final imagePath = xFile.path;
+        final userPictureRef =
+            FirebaseStorage.instance.ref('userPicture').child('$uid.jpg');
+        await userPictureRef.putFile(File(imagePath));
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .update({'userPictureRef': userPictureRef.fullPath});
+        setState(() {
+          _userPictureFuture = _userPictureDownload();
+        });
+      },
+      child: FutureBuilder<Uint8List?>(
+          future: _userPictureFuture,
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              final pictureInMemory = snapshot.data!;
+              return CircleAvatar(
+                backgroundImage: MemoryImage(pictureInMemory),
+              );
+            }
+            return const CircleAvatar(
+              child: Text('data'),
+            );
+          }),
+    );
+  }
+
+  Widget userInfoText(String data, {double? fontSize = 15.0}) => Text(
+        data,
+        style: TextStyle(color: normalWhite, fontSize: fontSize),
+      );
 
   void navigatorToPage(BuildContext context, Widget widget) {
     Navigator.of(context).push(MaterialPageRoute(
