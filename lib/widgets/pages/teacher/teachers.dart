@@ -19,7 +19,7 @@ class Teachers extends ConsumerWidget {
       body: Column(
         children: [
           textLengthContainer(
-            teacherLength(teacherRepository),
+            teacherLength(teacherRepository, context),
           ),
           Align(
             alignment: Alignment.centerRight,
@@ -72,11 +72,24 @@ class Teachers extends ConsumerWidget {
     );
   }
 
-  Padding teacherLength(TeachersRepository teachersRepository) {
+  Widget teacherLength(
+      TeachersRepository teachersRepository, BuildContext context) {
     return Padding(
       padding: ApplicationConstants.symmetricPadding,
-      child: Text(
-          '${teachersRepository.teachers.length} ${ApplicationConstants.teachersPageText}'),
+      child: Hero(
+        tag: 'teacher',
+        child: Material(
+          child: Container(
+            padding: ApplicationConstants.leftRighPadding,
+            color: Colors.purple.shade100,
+            child: TextButton(
+              onPressed: () => goToTeachers(context),
+              child: Text(
+                  '${teachersRepository.teachers.length} ${ApplicationConstants.teachersPageText}'),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

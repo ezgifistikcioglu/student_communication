@@ -29,17 +29,28 @@ class MyHomePage extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             TextButton(
-              onPressed: () => _goToMessages(context),
+              onPressed: () => goToMessages(context),
               child:
                   Text('${ref.watch(newMessagesNumberProvider)} new messages'),
             ),
-            TextButton(
-              onPressed: () => _goToStudents(context),
-              child: Text('${studentsRepository.students.length} new students'),
+            heroForUsersAnimation(
+              'student',
+              context,
+              TextButton(
+                onPressed: () => goToStudents(context),
+                child:
+                    Text('${studentsRepository.students.length} new students'),
+              ),
             ),
-            TextButton(
-              onPressed: () => _goToTeachers(context),
-              child: Text('${teachersRepository.teachers.length} new teachers'),
+            sizedBoxTen,
+            heroForUsersAnimation(
+              'teacher',
+              context,
+              TextButton(
+                onPressed: () => goToTeachers(context),
+                child:
+                    Text('${teachersRepository.teachers.length} new teachers'),
+              ),
             ),
           ],
         ),
@@ -47,26 +58,16 @@ class MyHomePage extends ConsumerWidget {
     );
   }
 
-  Future<void> _goToMessages(BuildContext context) async {
-    await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const Messages()),
+  Hero heroForUsersAnimation(
+      Object tag, BuildContext context, TextButton textButton) {
+    return Hero(
+      tag: tag,
+      child: Material(
+        child: Container(
+            padding: ApplicationConstants.normalPadding,
+            color: Colors.purple.shade100,
+            child: textButton),
+      ),
     );
-  }
-
-  _goToTeachers(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return const Teachers();
-      },
-    ));
-  }
-
-  _goToStudents(BuildContext context) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) {
-        return const Students();
-      },
-    ));
   }
 }

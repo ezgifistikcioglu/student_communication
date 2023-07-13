@@ -16,7 +16,7 @@ class Students extends ConsumerWidget {
       appBar: AppBar(title: const Text(ApplicationConstants.studentsPageText)),
       body: Column(
         children: [
-          textLengthContainer(studentLength(studentRepository)),
+          textLengthContainer(studentLength(studentRepository, context)),
           Align(
             alignment: Alignment.centerRight,
             child:
@@ -34,12 +34,24 @@ class Students extends ConsumerWidget {
     );
   }
 
-  Padding studentLength(StudentsRepository studentRepository) {
+  Widget studentLength(
+      StudentsRepository studentRepository, BuildContext context) {
     return Padding(
-      padding: ApplicationConstants.symmetricPadding,
-      child: Text(
-          '${studentRepository.students.length} ${ApplicationConstants.studentsPageText}'),
-    );
+        padding: ApplicationConstants.symmetricPadding,
+        child: Hero(
+          tag: 'student',
+          child: Material(
+            child: Container(
+              padding: ApplicationConstants.leftRighPadding,
+              color: Colors.purple.shade100,
+              child: TextButton(
+                onPressed: () => goToStudents(context),
+                child: Text(
+                    '${studentRepository.students.length} ${ApplicationConstants.studentsPageText}'),
+              ),
+            ),
+          ),
+        ));
   }
 }
 
@@ -54,7 +66,13 @@ class StudentListTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     bool doILove = ref.watch(studentProvider).doILove(student);
     return ListTile(
-      title: Text('${student.name} ${student.surname}'),
+      title: AnimatedPadding(
+        duration: const Duration(seconds: 1),
+        padding:
+            doILove ? const EdgeInsets.only(left: 60) : const EdgeInsets.only(),
+        curve: Curves.bounceOut,
+        child: Text('${student.name} ${student.surname}'),
+      ),
       leading: Icon(student.gender == ApplicationConstants.genderFText
           ? Icons.person_2_outlined
           : Icons.person_3_outlined),
@@ -62,7 +80,13 @@ class StudentListTile extends ConsumerWidget {
         onPressed: () {
           ref.read(studentProvider).like(student, !doILove);
         },
-        icon: Icon(doILove ? Icons.favorite : Icons.favorite_border),
+        icon: AnimatedCrossFade(
+          duration: const Duration(seconds: 2),
+          firstChild: const Icon(Icons.favorite),
+          secondChild: const Icon(Icons.favorite_border),
+          crossFadeState:
+              doILove ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+        ),
       ),
     );
   }

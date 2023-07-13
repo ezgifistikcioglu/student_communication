@@ -1,6 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../widgets/pages/message/messages.dart';
+import '../../widgets/pages/student/students.dart';
+import '../../widgets/pages/teacher/teachers.dart';
+
 class ApplicationConstants {
   static const String unknownText = 'Unknown';
   static const String errText = 'Error';
@@ -29,7 +33,9 @@ class ApplicationConstants {
   static const EdgeInsets normal2xPadding = EdgeInsets.all(18);
   static const EdgeInsets symmetricPadding =
       EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+
   static const EdgeInsets onlyPadding = EdgeInsets.only(top: 8, bottom: 8);
+  static const EdgeInsets leftRighPadding = EdgeInsets.only(left: 4, right: 4);
 }
 
 // MediaQuery
@@ -67,12 +73,12 @@ BoxDecoration ellipticalBoxDecoration() {
   return BoxDecoration(
     color: normalPurple,
     borderRadius: const BorderRadius.all(
-      Radius.elliptical(100, 16),
+      Radius.elliptical(120, 45),
     ),
   );
 }
 
-Container textLengthContainer(Widget? child) {
+Widget textLengthContainer(Widget? child) {
   return Container(
     margin: const EdgeInsets.all(0.05),
     decoration: ellipticalBoxDecoration(),
@@ -81,4 +87,27 @@ Container textLengthContainer(Widget? child) {
       child: child,
     ),
   );
+}
+
+Future<void> goToMessages(BuildContext context) async {
+  await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const Messages()),
+  );
+}
+
+goToTeachers(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) {
+      return const Teachers();
+    },
+  ));
+}
+
+goToStudents(BuildContext context) {
+  Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) {
+      return const Students();
+    },
+  ));
 }
